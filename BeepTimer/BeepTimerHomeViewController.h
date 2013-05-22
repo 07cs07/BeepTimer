@@ -10,4 +10,12 @@
 
 @interface BeepTimerHomeViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet UILabel *timer;
+@property (strong, nonatomic) IBOutlet UILabel *lapTime;
+@property (strong, nonatomic) IBOutlet UILabel *lapCounter;
+
+- (IBAction)startTimer:(id)sender;
+
+- (IBAction)stopTimer:(id)sender;
+
 @end
