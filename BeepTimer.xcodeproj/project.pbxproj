@@ -21,7 +21,7 @@
 		2C79A62F1715C94A007782B0 /* BeepTimerHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C79A62D1715C94A007782B0 /* BeepTimerHomeViewController.xib */; };
 		2CFC9A2B171C432B00252B3C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CFC9A2A171C432B00252B3C /* AudioToolbox.framework */; };
 		2CFC9A2D171C433F00252B3C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CFC9A2C171C433F00252B3C /* AVFoundation.framework */; };
-		2CFC9A2F171C461A00252B3C /* alert_beep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2CFC9A2E171C461A00252B3C /* alert_beep.mp3 */; };
+		2CFC9A2F171C461A00252B3C /* beep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2CFC9A2E171C461A00252B3C /* beep.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +45,7 @@
 		2C79A62E1715C94A007782B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/BeepTimerHomeViewController.xib; sourceTree = "<group>"; };
 		2CFC9A2A171C432B00252B3C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		2CFC9A2C171C433F00252B3C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		2CFC9A2E171C461A00252B3C /* alert_beep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alert_beep.mp3; sourceTree = "<group>"; };
+		2CFC9A2E171C461A00252B3C /* beep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = beep.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,15 +96,11 @@
 		2C79A6181715C94A007782B0 /* BeepTimer */ = {
 			isa = PBXGroup;
 			children = (
-				2CFC9A2E171C461A00252B3C /* alert_beep.mp3 */,
-				2C79A6211715C94A007782B0 /* BeepTimerHomeAppDelegate.h */,
-				2C79A6221715C94A007782B0 /* BeepTimerHomeAppDelegate.m */,
-				2C79A62A1715C94A007782B0 /* BeepTimerHomeViewController.h */,
-				2C79A62B1715C94A007782B0 /* BeepTimerHomeViewController.m */,
-				2C79A62D1715C94A007782B0 /* BeepTimerHomeViewController.xib */,
-				2C79A6191715C94A007782B0 /* Supporting Files */,
 				2C22BBCD1726FEB5004A3EDE /* BeepTimer.h */,
 				2C22BBCE1726FEB5004A3EDE /* BeepTimer.m */,
+				2CF4823A17902594000B9290 /* Resources */,
+				2CF4823917902584000B9290 /* Classes */,
+				2C79A6191715C94A007782B0 /* Supporting Files */,
 			);
 			path = BeepTimer;
 			sourceTree = "<group>";
@@ -121,6 +117,26 @@
 				2C79A6281715C94A007782B0 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2CF4823917902584000B9290 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				2C79A6211715C94A007782B0 /* BeepTimerHomeAppDelegate.h */,
+				2C79A6221715C94A007782B0 /* BeepTimerHomeAppDelegate.m */,
+				2C79A62A1715C94A007782B0 /* BeepTimerHomeViewController.h */,
+				2C79A62B1715C94A007782B0 /* BeepTimerHomeViewController.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		2CF4823A17902594000B9290 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2CFC9A2E171C461A00252B3C /* beep.mp3 */,
+				2C79A62D1715C94A007782B0 /* BeepTimerHomeViewController.xib */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,7 +196,7 @@
 				2C79A6271715C94A007782B0 /* Default@2x.png in Resources */,
 				2C79A6291715C94A007782B0 /* Default-568h@2x.png in Resources */,
 				2C79A62F1715C94A007782B0 /* BeepTimerHomeViewController.xib in Resources */,
-				2CFC9A2F171C461A00252B3C /* alert_beep.mp3 in Resources */,
+				2CFC9A2F171C461A00252B3C /* beep.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

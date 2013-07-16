@@ -1,11 +1,19 @@
-//
-//  BeepTimer.m
-//  BeepTimer
-//
-//  Created by MaG~2 on 23/04/13.
-//  Copyright (c) 2013 Mobs and Geeks. All rights reserved.
-//
-
+/*
+ * Copyright (C) 2013 Mobs and Geeks
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @author Balachander.M <chicjai@gmail.com>
+ * @version 0.1
+ */
 
 #import "BeepTimer.h"
 
@@ -17,6 +25,7 @@ static NSInteger lapTime = 30;
 @synthesize hours;
 @synthesize minutes;
 @synthesize seconds;
+@synthesize lapInterval;
 
 - (id)init
 {
@@ -24,8 +33,24 @@ static NSInteger lapTime = 30;
     if (self)
     {
         running = NO;
+        lapInterval = lapTime;
+        [self prepareBeepSound];
     }
     return self;
+}
+
+- (void)prepareBeepSound
+{
+    NSError *error;
+    NSString *soundFilePath = [[NSBundle mainBundle] pathForResource:@"beep" ofType:@"mp3"];
+    NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
+    
+    beepSoundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL error:&error];
+    [beepSoundPlayer setVolume:10.0];
+    [beepSoundPlayer prepareToPlay];
+    
+    if (beepSoundPlayer == nil)
+        NSLog(@"%@",[error description]);
 }
 
 - (void)start
@@ -42,12 +67,11 @@ static NSInteger lapTime = 30;
     }
 }
 
-- (void)stop
+- (void)pause
 {
     [myTimer invalidate];
     myTimer = nil;
     running = NO;
-    
 }
 
 -(void)updateTimer:(NSTimer *)timer
@@ -57,36 +81,35 @@ static NSInteger lapTime = 30;
     minutes = (counter / 60) % 60;
     hours = counter / 3600;
     
-    if ([self.delegate respondsToSelector:@selector(updatedHours:minutes:andSeconds:)])
-        [self.delegate updatedHours:hours minutes:minutes andSeconds:seconds];
+    if ([self.delegate respondsToSelector:@selector(updateHours:minutes:andSeconds:)])
+        [self.delegate updateHours:hours minutes:minutes andSeconds:seconds];
     
-    if (counter % lapTime == 0 && counter) // For Every 30 Seconds
+    if (counter % lapInterval == 0 && counter) // lapInterval default 30 Seconds
     {
-        NSError *error;
-        NSString *soundFilePath = [[NSBundle mainBundle] pathForResource:@"alert_beep" ofType:@"mp3"];
-        NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
-        
-        player = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL error:&error];
-        [player setVolume:2.0];
-        [player prepareToPlay];
-        
-        if (player == nil)
-            NSLog(@"%@",[error description]);
-        else
-            [player play]; // TODO: Have to work on it
+        [self playBeepSound];
         lapCounter++;
-        if ([self.delegate respondsToSelector:@selector(updatedLapCount:)])
-            [self.delegate updatedLapCount:(int)lapCounter];
+        if ([self.delegate respondsToSelector:@selector(updateLapCount:)])
+            [self.delegate updateLapCount:(int)lapCounter];
     }
 }
 
-- (void)reset
+- (void)playBeepSound
+{
+    if (beepSoundPlayer) {
+        [beepSoundPlayer play];
+    }else{
+        [self prepareBeepSound];
+        [beepSoundPlayer play];
+    }
+}
+
+- (void)stop
 {
     [myTimer invalidate];
     myTimer = nil;
     counter = -1;
-    [self updateTimer:myTimer];
     lapCounter = 0;
+    [self updateTimer:myTimer];
     running = NO;
 }
 

@@ -1,10 +1,19 @@
-//
-//  BeepTimer.h
-//  BeepTimer
-//
-//  Created by MaG~2 on 23/04/13.
-//  Copyright (c) 2013 Mobs and Geeks. All rights reserved.
-//
+/*
+ * Copyright (C) 2013 Mobs and Geeks
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @author Balachander.M <chicjai@gmail.com>
+ * @version 0.1
+ */
 
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
@@ -13,28 +22,25 @@
 @protocol BeepTimerDelegate <NSObject>
 
 @optional
-- (void)updatedHours:(int)hrs minutes:(int)mins andSeconds:(int)secs;
-- (void)updatedLapCount:(int)lapCount;
+- (void)updateHours:(int)hrs minutes:(int)mins andSeconds:(int)secs;
+- (void)updateLapCount:(int)lapCount;
 @end
 
 @interface BeepTimer : NSObject
 {
-    AVAudioPlayer *player;
+    AVAudioPlayer *beepSoundPlayer;
     NSTimer *myTimer;
     BOOL running;
-    UIBackgroundTaskIdentifier bgTask;
 }
 
 @property (nonatomic) int hours;
 @property (nonatomic) int minutes;
 @property (nonatomic) int seconds;
-@property (nonatomic) int lapCount;
 @property (nonatomic) int lapInterval;
-
 
 @property (strong) id <BeepTimerDelegate> delegate;
 
 - (void)start;
+- (void)pause;
 - (void)stop;
-- (void)reset;
 @end
