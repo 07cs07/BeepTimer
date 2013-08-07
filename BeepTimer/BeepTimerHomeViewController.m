@@ -22,7 +22,6 @@
 
 @interface BeepTimerHomeViewController ()<BeepTimerDelegate>
 {
-    NSTimer *myTimer;
     BOOL running;
     BeepTimer *beepTimer;
 }
@@ -37,7 +36,7 @@
     
     beepTimer = [[BeepTimer alloc] init];
     beepTimer.delegate = self;
-    beepTimer.lapInterval = 10;
+    beepTimer.lapInterval = 30;
     running = NO;
     self.timer.text = @"00:00:00";
     self.lapCounter.text = @"00";
@@ -90,8 +89,7 @@
     [super viewDidUnload];
 }
 
-#pragma mark -
-#pragma mark BeepTimer Delegates
+#pragma mark - BeepTimer Delegates
 
 - (void)updateHours:(int)hrs minutes:(int)mins andSeconds:(int)secs
 {

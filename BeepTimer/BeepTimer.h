@@ -30,6 +30,7 @@
 {
     AVAudioPlayer *beepSoundPlayer;
     NSTimer *myTimer;
+    dispatch_source_t dispatchTimer;
     BOOL running;
 }
 

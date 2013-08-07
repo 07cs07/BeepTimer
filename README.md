@@ -1,24 +1,17 @@
 # BeepTimer #
 =========
 
-This is a project for iOS that beeps for every 30 secs.
+iOS App to beeps for every given interval asynchronously.
 
-BeepTimer(.h,.m) is a subclass of NSObject ,designed to be very efficient and uses delegate pattern
-
-### ARC Support ###
+BeepTimer(.h,.m) is a subclass of NSObject, uses `dispatch_source_t` of type `DISPATCH_SOURCE_TYPE_TIMER` to run *asynchronously* in seperate `Thread`.
 ***BeepTimer*** supports ***ARC*** and for non-ARC users just add the `-fobjc-arc` compiler flag to the BeepTimer files.
-
-### Installation ###
-
-### Frameworks :
-- **AVFoundation**
-- **AudioToolbox**
 
 ### How to use it
 
-1. Drag-and-drop BeepTimer(.h and .m) them into your Xcode project.
-2. Tick the **Copy items into destination group's folder** option.
-3. Use `#import "BeepTimer.h"` in  your source files.
+1. Add **AVFoundation** and **AudioToolbox** framework to your project.
+2. Drag-and-drop BeepTimer(.h and .m) them into your Xcode project.
+3. Tick the **Copy items into destination group's folder** option.
+4. Use `#import "BeepTimer.h"` in  your source files.
 
 ### Sample Code
 	

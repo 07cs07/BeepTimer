@@ -46,7 +46,7 @@ static NSInteger lapTime = 30;
     NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
     
     beepSoundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL error:&error];
-    [beepSoundPlayer setVolume:10.0];
+    [beepSoundPlayer setVolume:1.0];
     [beepSoundPlayer prepareToPlay];
     
     if (beepSoundPlayer == nil)
@@ -57,39 +57,59 @@ static NSInteger lapTime = 30;
 {
     running =! running;
     if (running) {
-        [myTimer invalidate];
-        myTimer = nil;
-        myTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/1.0
-                                                   target:self
-                                                 selector:@selector(updateTimer:)
-                                                 userInfo:nil
-                                                  repeats:YES];
+        dispatchTimer = CreateDispatchTimer(1ull * NSEC_PER_SEC, (1ull * NSEC_PER_SEC)/10 , dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self updateTimer];
+        });
     }
+    else {
+        dispatch_resume(dispatchTimer);
+    }
+}
+
+dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispatch_queue_t queue, dispatch_block_t block)
+{
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    if (timer)
+    {
+        dispatch_source_set_timer(timer, dispatch_walltime(NULL, 0), interval, leeway);
+        dispatch_source_set_event_handler(timer, block);
+        dispatch_resume(timer);
+    }
+    return timer;
+}
+
+void RemoveDispatchTimer(dispatch_source_t mySource)
+{
+    dispatch_source_cancel(mySource);
 }
 
 - (void)pause
 {
-    [myTimer invalidate];
-    myTimer = nil;
-    running = NO;
+    dispatch_suspend(dispatchTimer);
 }
 
--(void)updateTimer:(NSTimer *)timer
+-(void)updateTimer
 {
     counter++;
     seconds = counter % 60;
     minutes = (counter / 60) % 60;
     hours = counter / 3600;
     
-    if ([self.delegate respondsToSelector:@selector(updateHours:minutes:andSeconds:)])
-        [self.delegate updateHours:hours minutes:minutes andSeconds:seconds];
+    if ([self.delegate respondsToSelector:@selector(updateHours:minutes:andSeconds:)]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.delegate updateHours:hours minutes:minutes andSeconds:seconds];
+        });
+    }
     
     if (counter % lapInterval == 0 && counter) // lapInterval default 30 Seconds
     {
         [self playBeepSound];
         lapCounter++;
-        if ([self.delegate respondsToSelector:@selector(updateLapCount:)])
-            [self.delegate updateLapCount:(int)lapCounter];
+        if ([self.delegate respondsToSelector:@selector(updateLapCount:)]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate updateLapCount:(int)lapCounter];
+            });
+        }
     }
 }
 
@@ -97,7 +117,8 @@ static NSInteger lapTime = 30;
 {
     if (beepSoundPlayer) {
         [beepSoundPlayer play];
-    }else{
+    }
+    else {
         [self prepareBeepSound];
         [beepSoundPlayer play];
     }
@@ -105,12 +126,11 @@ static NSInteger lapTime = 30;
 
 - (void)stop
 {
-    [myTimer invalidate];
-    myTimer = nil;
+    running = NO;
+    RemoveDispatchTimer(dispatchTimer);
     counter = -1;
     lapCounter = 0;
-    [self updateTimer:myTimer];
-    running = NO;
+    [self updateTimer];
 }
 
 @end
