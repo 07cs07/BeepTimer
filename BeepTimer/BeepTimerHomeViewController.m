@@ -37,9 +37,7 @@
     beepTimer = [[BeepTimer alloc] init];
     beepTimer.delegate = self;
     beepTimer.lapInterval = 30;
-    running = NO;
-    self.timer.text = @"00:00:00";
-    self.lapCounter.text = @"00";
+    [self setReadyState];
     self.lapTime.text = [NSString stringWithFormat:@"%02d", (int)beepTimer.lapInterval];
 
     // This prevents the device from locking, while app is running
@@ -52,27 +50,33 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)setReadyState
+{
+    running = NO;
+    self.timer.text = @"00:00:00";
+    self.lapCounter.text = @"00";
+    [_startBtn setTitle:@"Start" forState:UIControlStateNormal];
+    [_startBtn setTitle:@"Start" forState:UIControlStateSelected];
+}
+
 - (IBAction)startOrPauseTimer:(id)sender
 {
-    UIButton *button = (UIButton *)sender;
     if (!running) {
         [beepTimer start];
-        [button setTitle:@"Pause" forState:UIControlStateNormal];
-        [button setTitle:@"Pause" forState:UIControlStateSelected];
+        [_startBtn setTitle:@"Pause" forState:UIControlStateNormal];
+        [_startBtn setTitle:@"Pause" forState:UIControlStateSelected];
     }else {
         [beepTimer pause];
-        [button setTitle:@"Start" forState:UIControlStateNormal];
-        [button setTitle:@"Start" forState:UIControlStateSelected];
+        [_startBtn setTitle:@"Start" forState:UIControlStateNormal];
+        [_startBtn setTitle:@"Start" forState:UIControlStateSelected];
     }
     running = !running;
 }
 
 - (IBAction)stopTimer:(id)sender
 {
-    self.timer.text = @"00:00:00";
-    self.lapCounter.text = @"00";
-    running = NO;
     [beepTimer stop];
+    [self setReadyState];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -86,6 +90,8 @@
     [self setLapCounter:nil];
     [self setLapTime:nil];
     [self setLapCounter:nil];
+    [self setStartBtn:nil];
+    [self setStopBtn:nil];
     [super viewDidUnload];
 }
 

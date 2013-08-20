@@ -22,6 +22,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *timer;
 @property (strong, nonatomic) IBOutlet UILabel *lapTime;
 @property (strong, nonatomic) IBOutlet UILabel *lapCounter;
+@property (strong, nonatomic) IBOutlet UIButton *startBtn;
+@property (strong, nonatomic) IBOutlet UIButton *stopBtn;
 
 - (IBAction)startOrPauseTimer:(id)sender;
 - (IBAction)stopTimer:(id)sender;

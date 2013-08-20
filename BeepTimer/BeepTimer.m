@@ -66,6 +66,21 @@ static NSInteger lapTime = 30;
     }
 }
 
+- (void)pause
+{
+    dispatch_suspend(dispatchTimer);
+}
+
+- (void)stop
+{
+    running = NO;
+    RemoveDispatchTimer(dispatchTimer);
+    dispatchTimer = nil;
+    counter = -1;
+    lapCounter = 0;
+    [self updateTimer];
+}
+
 dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispatch_queue_t queue, dispatch_block_t block)
 {
     dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
@@ -81,11 +96,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 void RemoveDispatchTimer(dispatch_source_t mySource)
 {
     dispatch_source_cancel(mySource);
-}
-
-- (void)pause
-{
-    dispatch_suspend(dispatchTimer);
 }
 
 -(void)updateTimer
@@ -122,15 +132,6 @@ void RemoveDispatchTimer(dispatch_source_t mySource)
         [self prepareBeepSound];
         [beepSoundPlayer play];
     }
-}
-
-- (void)stop
-{
-    running = NO;
-    RemoveDispatchTimer(dispatchTimer);
-    counter = -1;
-    lapCounter = 0;
-    [self updateTimer];
 }
 
 @end
